@@ -40,6 +40,21 @@ gstack/
 │   │   └── snapshot.ts  # SNAPSHOT_FLAGS metadata array
 │   ├── test/        # Integration tests + fixtures
 │   └── dist/        # Compiled binary
+├── skills/          # All skills live here (npx skills add compatible)
+│   ├── browse/      # /browse skill docs (SKILL.md + template)
+│   ├── qa/          # /qa skill (full QA + fix loop)
+│   ├── qa-only/     # /qa-only skill (report-only QA, no fixes)
+│   ├── qa-design-review/  # /qa-design-review (design audit + fix loop)
+│   ├── review/      # /review PR review skill
+│   ├── ship/        # /ship workflow skill
+│   ├── plan-ceo-review/   # /plan-ceo-review skill
+│   ├── plan-eng-review/   # /plan-eng-review skill
+│   ├── plan-design-review/ # /plan-design-review skill
+│   ├── design-consultation/ # /design-consultation skill
+│   ├── retro/       # /retro retrospective skill
+│   ├── document-release/  # /document-release skill
+│   ├── gstack-upgrade/    # /gstack-upgrade skill
+│   └── setup-browser-cookies/ # /setup-browser-cookies skill
 ├── scripts/         # Build + DX tooling
 │   ├── gen-skill-docs.ts  # Template → SKILL.md generator
 │   ├── skill-check.ts     # Health dashboard
@@ -51,15 +66,7 @@ gstack/
 │   ├── gen-skill-docs.test.ts    # Tier 1: generator quality (free, <1s)
 │   ├── skill-llm-eval.test.ts   # Tier 3: LLM-as-judge (~$0.15/run)
 │   └── skill-e2e.test.ts         # Tier 2: E2E via claude -p (~$3.85/run)
-├── qa-only/         # /qa-only skill (report-only QA, no fixes)
-├── plan-design-review/  # /plan-design-review skill (report-only design audit)
-├── qa-design-review/    # /qa-design-review skill (design audit + fix loop)
-├── ship/            # Ship workflow skill
-├── review/          # PR review skill
-├── plan-ceo-review/ # /plan-ceo-review skill
-├── plan-eng-review/ # /plan-eng-review skill
-├── retro/           # Retrospective skill
-├── document-release/ # /document-release skill (post-ship doc updates)
+├── Makefile         # install, build, link-skills, test, status
 ├── setup            # One-time setup: build binary + symlink skills
 ├── SKILL.md         # Generated from SKILL.md.tmpl (don't edit directly)
 ├── SKILL.md.tmpl    # Template: edit this, run gen:skill-docs
@@ -70,7 +77,7 @@ gstack/
 
 SKILL.md files are **generated** from `.tmpl` templates. To update docs:
 
-1. Edit the `.tmpl` file (e.g. `SKILL.md.tmpl` or `browse/SKILL.md.tmpl`)
+1. Edit the `.tmpl` file (e.g. `SKILL.md.tmpl` or `skills/browse/SKILL.md.tmpl`)
 2. Run `bun run gen:skill-docs` (or `bun run build` which does it automatically)
 3. Commit both the `.tmpl` and generated `.md` files
 

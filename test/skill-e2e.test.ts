@@ -461,7 +461,7 @@ describeIfSelected('QA skill E2E', ['qa-quick'], () => {
     setupBrowseShims(qaDir);
 
     // Copy qa skill files into tmpDir
-    copyDirSync(path.join(ROOT, 'qa'), path.join(qaDir, 'qa'));
+    copyDirSync(path.join(ROOT, 'skills', 'qa'), path.join(qaDir, 'qa'));
 
     // Create report directory
     fs.mkdirSync(path.join(qaDir, 'qa-reports'), { recursive: true });
@@ -535,9 +535,9 @@ describeIfSelected('Review skill E2E', ['review-sql-injection'], () => {
     run('git', ['commit', '-m', 'add user controller']);
 
     // Copy review skill files
-    fs.copyFileSync(path.join(ROOT, 'review', 'SKILL.md'), path.join(reviewDir, 'review-SKILL.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'checklist.md'), path.join(reviewDir, 'review-checklist.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'greptile-triage.md'), path.join(reviewDir, 'review-greptile-triage.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'SKILL.md'), path.join(reviewDir, 'review-SKILL.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'checklist.md'), path.join(reviewDir, 'review-checklist.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'greptile-triage.md'), path.join(reviewDir, 'review-greptile-triage.md'));
   });
 
   afterAll(() => {
@@ -593,9 +593,9 @@ describeIfSelected('Review enum completeness E2E', ['review-enum-completeness'],
     run('git', ['commit', '-m', 'add returned status']);
 
     // Copy review skill files
-    fs.copyFileSync(path.join(ROOT, 'review', 'SKILL.md'), path.join(enumDir, 'review-SKILL.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'checklist.md'), path.join(enumDir, 'review-checklist.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'greptile-triage.md'), path.join(enumDir, 'review-greptile-triage.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'SKILL.md'), path.join(enumDir, 'review-SKILL.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'checklist.md'), path.join(enumDir, 'review-checklist.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'greptile-triage.md'), path.join(enumDir, 'review-greptile-triage.md'));
   });
 
   afterAll(() => {
@@ -656,7 +656,7 @@ const anyOutcomeSelected = selectedTests === null || outcomeTestNames.some(t => 
     setupBrowseShims(outcomeDir);
 
     // Copy qa skill files
-    copyDirSync(path.join(ROOT, 'qa'), path.join(outcomeDir, 'qa'));
+    copyDirSync(path.join(ROOT, 'skills', 'qa'), path.join(outcomeDir, 'qa'));
   });
 
   afterAll(() => {
@@ -1117,7 +1117,7 @@ describeIfSelected('Retro E2E', ['retro'], () => {
     // Copy retro skill
     fs.mkdirSync(path.join(retroDir, 'retro'), { recursive: true });
     fs.copyFileSync(
-      path.join(ROOT, 'retro', 'SKILL.md'),
+      path.join(ROOT, 'skills', 'retro', 'SKILL.md'),
       path.join(retroDir, 'retro', 'SKILL.md'),
     );
   });
@@ -1168,12 +1168,12 @@ describeIfSelected('QA-Only skill E2E', ['qa-only-no-fix'], () => {
     setupBrowseShims(qaOnlyDir);
 
     // Copy qa-only skill files
-    copyDirSync(path.join(ROOT, 'qa-only'), path.join(qaOnlyDir, 'qa-only'));
+    copyDirSync(path.join(ROOT, 'skills', 'qa-only'), path.join(qaOnlyDir, 'qa-only'));
 
     // Copy qa templates (qa-only references qa/templates/qa-report-template.md)
     fs.mkdirSync(path.join(qaOnlyDir, 'qa', 'templates'), { recursive: true });
     fs.copyFileSync(
-      path.join(ROOT, 'qa', 'templates', 'qa-report-template.md'),
+      path.join(ROOT, 'skills', 'qa', 'templates', 'qa-report-template.md'),
       path.join(qaOnlyDir, 'qa', 'templates', 'qa-report-template.md'),
     );
 
@@ -1254,7 +1254,7 @@ describeIfSelected('QA Fix Loop E2E', ['qa-fix-loop'], () => {
     setupBrowseShims(qaFixDir);
 
     // Copy qa skill files
-    copyDirSync(path.join(ROOT, 'qa'), path.join(qaFixDir, 'qa'));
+    copyDirSync(path.join(ROOT, 'skills', 'qa'), path.join(qaFixDir, 'qa'));
 
     // Create a simple HTML page with obvious fixable bugs
     fs.writeFileSync(path.join(qaFixDir, 'index.html'), `<!DOCTYPE html>
@@ -1519,9 +1519,9 @@ describeIfSelected('Base branch detection', ['review-base-branch', 'ship-base-br
     run('git', ['commit', '-m', 'feat: add hello method'], dir);
 
     // Copy review skill files
-    fs.copyFileSync(path.join(ROOT, 'review', 'SKILL.md'), path.join(dir, 'review-SKILL.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'checklist.md'), path.join(dir, 'review-checklist.md'));
-    fs.copyFileSync(path.join(ROOT, 'review', 'greptile-triage.md'), path.join(dir, 'review-greptile-triage.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'SKILL.md'), path.join(dir, 'review-SKILL.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'checklist.md'), path.join(dir, 'review-checklist.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'review', 'greptile-triage.md'), path.join(dir, 'review-greptile-triage.md'));
 
     const result = await runSkillTest({
       prompt: `You are in a git repo on a feature branch with changes.
@@ -1571,7 +1571,7 @@ Write your findings to ${dir}/review-output.md`,
     run('git', ['commit', '-m', 'feat: update to v2'], dir);
 
     // Copy ship skill
-    fs.copyFileSync(path.join(ROOT, 'ship', 'SKILL.md'), path.join(dir, 'ship-SKILL.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'ship', 'SKILL.md'), path.join(dir, 'ship-SKILL.md'));
 
     const result = await runSkillTest({
       prompt: `Read ship-SKILL.md for the ship workflow.
@@ -1637,7 +1637,7 @@ Write a summary of what you detected to ${dir}/ship-preflight.md including:
 
     // Copy retro skill
     fs.mkdirSync(path.join(dir, 'retro'), { recursive: true });
-    fs.copyFileSync(path.join(ROOT, 'retro', 'SKILL.md'), path.join(dir, 'retro', 'SKILL.md'));
+    fs.copyFileSync(path.join(ROOT, 'skills', 'retro', 'SKILL.md'), path.join(dir, 'retro', 'SKILL.md'));
 
     const result = await runSkillTest({
       prompt: `Read retro/SKILL.md for instructions on how to run a retrospective.
@@ -1680,7 +1680,7 @@ describeIfSelected('Document-Release skill E2E', ['document-release'], () => {
     docReleaseDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skill-e2e-doc-release-'));
 
     // Copy document-release skill files
-    copyDirSync(path.join(ROOT, 'document-release'), path.join(docReleaseDir, 'document-release'));
+    copyDirSync(path.join(ROOT, 'skills', 'document-release'), path.join(docReleaseDir, 'document-release'));
 
     // Init git repo with initial docs
     const run = (cmd: string, args: string[]) =>
@@ -1853,7 +1853,7 @@ A civic tech data platform for government employees to access, visualize, and sh
     // Copy design-consultation skill
     fs.mkdirSync(path.join(designDir, 'design-consultation'), { recursive: true });
     fs.copyFileSync(
-      path.join(ROOT, 'design-consultation', 'SKILL.md'),
+      path.join(ROOT, 'skills', 'design-consultation', 'SKILL.md'),
       path.join(designDir, 'design-consultation', 'SKILL.md'),
     );
   });
@@ -2357,7 +2357,7 @@ describeIfSelected('Test Bootstrap E2E', ['qa-bootstrap'], () => {
     setupBrowseShims(bootstrapDir);
 
     // Copy qa skill files
-    copyDirSync(path.join(ROOT, 'qa'), path.join(bootstrapDir, 'qa'));
+    copyDirSync(path.join(ROOT, 'skills', 'qa'), path.join(bootstrapDir, 'qa'));
 
     // Create a minimal Node.js project with NO test framework
     fs.writeFileSync(path.join(bootstrapDir, 'package.json'), JSON.stringify({
@@ -2492,8 +2492,8 @@ describeIfSelected('Test Coverage Audit E2E', ['ship-coverage-audit'], () => {
     coverageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skill-e2e-coverage-'));
 
     // Copy ship skill files
-    copyDirSync(path.join(ROOT, 'ship'), path.join(coverageDir, 'ship'));
-    copyDirSync(path.join(ROOT, 'review'), path.join(coverageDir, 'review'));
+    copyDirSync(path.join(ROOT, 'skills', 'ship'), path.join(coverageDir, 'ship'));
+    copyDirSync(path.join(ROOT, 'skills', 'review'), path.join(coverageDir, 'review'));
 
     // Create a Node.js project WITH test framework but coverage gaps
     fs.writeFileSync(path.join(coverageDir, 'package.json'), JSON.stringify({

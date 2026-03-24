@@ -126,9 +126,19 @@ One person, ten parallel agents, each with the right cognitive mode. That is a d
 
 ## Install — takes 30 seconds
 
-**Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Git](https://git-scm.com/), [Bun](https://bun.sh/) v1.0+
+### Option A: Skills only (no browser binary)
 
-### Step 1: Install on your machine
+Zero dependencies. Instant. Works with `npx skills add`:
+
+```bash
+npx skills add garrytan/gstack
+```
+
+This installs all 14 skills (`/review`, `/ship`, `/qa-only`, `/plan-ceo-review`, etc.) without building the browse binary. Skills that don't need the browser (`/review`, `/ship`, `/retro`, `/plan-*`) work immediately.
+
+### Option B: Full install (skills + browser)
+
+**Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Git](https://git-scm.com/), [Bun](https://bun.sh/) v1.0+
 
 Open Claude Code and paste this. Claude does the rest.
 
@@ -139,6 +149,15 @@ Open Claude Code and paste this. Claude does the rest.
 > Add gstack to this project: run `cp -Rf ~/.claude/skills/gstack .claude/skills/gstack && rm -rf .claude/skills/gstack/.git && cd .claude/skills/gstack && ./setup` then add a "gstack" section to this project's CLAUDE.md that says to use the /browse skill from gstack for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /qa-design-review, /setup-browser-cookies, /retro, /document-release, and tells Claude that if gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to build the binary and register skills.
 
 Real files get committed to your repo (not a submodule), so `git clone` just works. Everything lives inside `.claude/`. Nothing touches your PATH or runs in the background.
+
+### For contributors: Makefile workflow
+
+```bash
+make link-skills   # Symlink skills to Claude, Gemini, Codex (idempotent)
+make build         # Build binary + regenerate SKILL.md docs
+make test          # Validate skill frontmatter
+make status        # Show install state
+```
 
 ---
 

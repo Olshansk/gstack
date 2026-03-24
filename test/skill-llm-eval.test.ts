@@ -257,7 +257,7 @@ Scores are 1-5 overall quality.`,
 // --- Part 7: QA skill quality evals (C6) ---
 
 describeIfSelected('QA skill quality evals', ['qa/SKILL.md workflow', 'qa/SKILL.md health rubric'], () => {
-  const qaContent = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
+  const qaContent = fs.readFileSync(path.join(ROOT, 'skills', 'qa', 'SKILL.md'), 'utf-8');
 
   testIfSelected('qa/SKILL.md workflow', async () => {
     const t0 = Date.now();
@@ -349,10 +349,10 @@ ${section}`);
 describeIfSelected('Cross-skill consistency evals', ['cross-skill greptile consistency'], () => {
   testIfSelected('cross-skill greptile consistency', async () => {
     const t0 = Date.now();
-    const reviewContent = fs.readFileSync(path.join(ROOT, 'review', 'SKILL.md'), 'utf-8');
-    const shipContent = fs.readFileSync(path.join(ROOT, 'ship', 'SKILL.md'), 'utf-8');
-    const triageContent = fs.readFileSync(path.join(ROOT, 'review', 'greptile-triage.md'), 'utf-8');
-    const retroContent = fs.readFileSync(path.join(ROOT, 'retro', 'SKILL.md'), 'utf-8');
+    const reviewContent = fs.readFileSync(path.join(ROOT, 'skills', 'review', 'SKILL.md'), 'utf-8');
+    const shipContent = fs.readFileSync(path.join(ROOT, 'skills', 'ship', 'SKILL.md'), 'utf-8');
+    const triageContent = fs.readFileSync(path.join(ROOT, 'skills', 'review', 'greptile-triage.md'), 'utf-8');
+    const retroContent = fs.readFileSync(path.join(ROOT, 'skills', 'retro', 'SKILL.md'), 'utf-8');
 
     const extractGrepLines = (content: string, filename: string) => {
       const lines = content.split('\n')

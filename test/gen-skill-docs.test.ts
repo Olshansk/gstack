@@ -43,8 +43,8 @@ describe('gen-skill-docs', () => {
     expect(content).toContain('Regenerate: bun run gen:skill-docs');
   });
 
-  test('generated header is present in browse/SKILL.md', () => {
-    const content = fs.readFileSync(path.join(ROOT, 'browse', 'SKILL.md'), 'utf-8');
+  test('generated header is present in skills/browse/SKILL.md', () => {
+    const content = fs.readFileSync(path.join(ROOT, 'skills', 'browse', 'SKILL.md'), 'utf-8');
     expect(content).toContain('AUTO-GENERATED from SKILL.md.tmpl');
   });
 
@@ -59,19 +59,19 @@ describe('gen-skill-docs', () => {
   // All skills that must have templates — single source of truth
   const ALL_SKILLS = [
     { dir: '.', name: 'root gstack' },
-    { dir: 'browse', name: 'browse' },
-    { dir: 'qa', name: 'qa' },
-    { dir: 'qa-only', name: 'qa-only' },
-    { dir: 'review', name: 'review' },
-    { dir: 'ship', name: 'ship' },
-    { dir: 'plan-ceo-review', name: 'plan-ceo-review' },
-    { dir: 'plan-eng-review', name: 'plan-eng-review' },
-    { dir: 'retro', name: 'retro' },
-    { dir: 'setup-browser-cookies', name: 'setup-browser-cookies' },
-    { dir: 'gstack-upgrade', name: 'gstack-upgrade' },
-    { dir: 'plan-design-review', name: 'plan-design-review' },
-    { dir: 'qa-design-review', name: 'qa-design-review' },
-    { dir: 'design-consultation', name: 'design-consultation' },
+    { dir: 'skills/browse', name: 'browse' },
+    { dir: 'skills/qa', name: 'qa' },
+    { dir: 'skills/qa-only', name: 'qa-only' },
+    { dir: 'skills/review', name: 'review' },
+    { dir: 'skills/ship', name: 'ship' },
+    { dir: 'skills/plan-ceo-review', name: 'plan-ceo-review' },
+    { dir: 'skills/plan-eng-review', name: 'plan-eng-review' },
+    { dir: 'skills/retro', name: 'retro' },
+    { dir: 'skills/setup-browser-cookies', name: 'setup-browser-cookies' },
+    { dir: 'skills/gstack-upgrade', name: 'gstack-upgrade' },
+    { dir: 'skills/plan-design-review', name: 'plan-design-review' },
+    { dir: 'skills/qa-design-review', name: 'qa-design-review' },
+    { dir: 'skills/design-consultation', name: 'design-consultation' },
   ];
 
   test('every skill has a SKILL.md.tmpl template', () => {
@@ -130,7 +130,7 @@ describe('gen-skill-docs', () => {
     expect(rootTmpl).toContain('{{SNAPSHOT_FLAGS}}');
     expect(rootTmpl).toContain('{{PREAMBLE}}');
 
-    const browseTmpl = fs.readFileSync(path.join(ROOT, 'browse', 'SKILL.md.tmpl'), 'utf-8');
+    const browseTmpl = fs.readFileSync(path.join(ROOT, 'skills', 'browse', 'SKILL.md.tmpl'), 'utf-8');
     expect(browseTmpl).toContain('{{COMMAND_REFERENCE}}');
     expect(browseTmpl).toContain('{{SNAPSHOT_FLAGS}}');
     expect(browseTmpl).toContain('{{PREAMBLE}}');
@@ -162,16 +162,16 @@ describe('gen-skill-docs', () => {
   });
 
   test('qa and qa-only templates use QA_METHODOLOGY placeholder', () => {
-    const qaTmpl = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md.tmpl'), 'utf-8');
+    const qaTmpl = fs.readFileSync(path.join(ROOT, 'skills', 'qa', 'SKILL.md.tmpl'), 'utf-8');
     expect(qaTmpl).toContain('{{QA_METHODOLOGY}}');
 
-    const qaOnlyTmpl = fs.readFileSync(path.join(ROOT, 'qa-only', 'SKILL.md.tmpl'), 'utf-8');
+    const qaOnlyTmpl = fs.readFileSync(path.join(ROOT, 'skills', 'qa-only', 'SKILL.md.tmpl'), 'utf-8');
     expect(qaOnlyTmpl).toContain('{{QA_METHODOLOGY}}');
   });
 
   test('QA_METHODOLOGY appears expanded in both qa and qa-only generated files', () => {
-    const qaContent = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
-    const qaOnlyContent = fs.readFileSync(path.join(ROOT, 'qa-only', 'SKILL.md'), 'utf-8');
+    const qaContent = fs.readFileSync(path.join(ROOT, 'skills', 'qa', 'SKILL.md'), 'utf-8');
+    const qaOnlyContent = fs.readFileSync(path.join(ROOT, 'skills', 'qa-only', 'SKILL.md'), 'utf-8');
 
     // Both should contain the health score rubric
     expect(qaContent).toContain('Health Score Rubric');
@@ -193,7 +193,7 @@ describe('gen-skill-docs', () => {
   });
 
   test('qa-only has no-fix guardrails', () => {
-    const qaOnlyContent = fs.readFileSync(path.join(ROOT, 'qa-only', 'SKILL.md'), 'utf-8');
+    const qaOnlyContent = fs.readFileSync(path.join(ROOT, 'skills', 'qa-only', 'SKILL.md'), 'utf-8');
     expect(qaOnlyContent).toContain('Never fix bugs');
     expect(qaOnlyContent).toContain('NEVER fix anything');
     // Should not have Edit, Glob, or Grep in allowed-tools
@@ -203,7 +203,7 @@ describe('gen-skill-docs', () => {
   });
 
   test('qa has fix-loop tools and phases', () => {
-    const qaContent = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
+    const qaContent = fs.readFileSync(path.join(ROOT, 'skills', 'qa', 'SKILL.md'), 'utf-8');
     // Should have Edit, Glob, Grep in allowed-tools
     expect(qaContent).toContain('Edit');
     expect(qaContent).toContain('Glob');
@@ -219,7 +219,7 @@ describe('gen-skill-docs', () => {
 
 describe('BASE_BRANCH_DETECT resolver', () => {
   // Find a generated SKILL.md that uses the placeholder (ship is guaranteed to)
-  const shipContent = fs.readFileSync(path.join(ROOT, 'ship', 'SKILL.md'), 'utf-8');
+  const shipContent = fs.readFileSync(path.join(ROOT, 'skills', 'ship', 'SKILL.md'), 'utf-8');
 
   test('resolver output contains PR base detection command', () => {
     expect(shipContent).toContain('gh pr view --json baseRefName');
@@ -328,20 +328,20 @@ describe('REVIEW_DASHBOARD resolver', () => {
 
   for (const skill of REVIEW_SKILLS) {
     test(`review dashboard appears in ${skill} generated file`, () => {
-      const content = fs.readFileSync(path.join(ROOT, skill, 'SKILL.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(ROOT, 'skills', skill, 'SKILL.md'), 'utf-8');
       expect(content).toContain('reviews.jsonl');
       expect(content).toContain('REVIEW READINESS DASHBOARD');
     });
   }
 
   test('review dashboard appears in ship generated file', () => {
-    const content = fs.readFileSync(path.join(ROOT, 'ship', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(ROOT, 'skills', 'ship', 'SKILL.md'), 'utf-8');
     expect(content).toContain('reviews.jsonl');
     expect(content).toContain('REVIEW READINESS DASHBOARD');
   });
 
   test('resolver output contains key dashboard elements', () => {
-    const content = fs.readFileSync(path.join(ROOT, 'plan-ceo-review', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(ROOT, 'skills', 'plan-ceo-review', 'SKILL.md'), 'utf-8');
     expect(content).toContain('VERDICT');
     expect(content).toContain('CLEARED');
     expect(content).toContain('Eng Review');

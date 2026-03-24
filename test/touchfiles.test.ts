@@ -29,14 +29,14 @@ describe('matchGlob', () => {
   });
 
   test('** does not match unrelated paths', () => {
-    expect(matchGlob('browse/src/commands.ts', 'qa/**')).toBe(false);
-    expect(matchGlob('review/SKILL.md', 'qa/**')).toBe(false);
+    expect(matchGlob('browse/src/commands.ts', 'skills/qa/**')).toBe(false);
+    expect(matchGlob('skills/review/SKILL.md', 'skills/qa/**')).toBe(false);
   });
 
   test('exact match works', () => {
     expect(matchGlob('SKILL.md', 'SKILL.md')).toBe(true);
     expect(matchGlob('SKILL.md.tmpl', 'SKILL.md')).toBe(false);
-    expect(matchGlob('qa/SKILL.md', 'SKILL.md')).toBe(false);
+    expect(matchGlob('skills/qa/SKILL.md', 'SKILL.md')).toBe(false);
   });
 
   test('* matches within a single segment', () => {
@@ -51,9 +51,9 @@ describe('matchGlob', () => {
   });
 
   test('** at end matches files in the directory', () => {
-    expect(matchGlob('qa/SKILL.md', 'qa/**')).toBe(true);
-    expect(matchGlob('qa/SKILL.md.tmpl', 'qa/**')).toBe(true);
-    expect(matchGlob('qa/templates/report.md', 'qa/**')).toBe(true);
+    expect(matchGlob('skills/qa/SKILL.md', 'skills/qa/**')).toBe(true);
+    expect(matchGlob('skills/qa/SKILL.md.tmpl', 'skills/qa/**')).toBe(true);
+    expect(matchGlob('skills/qa/templates/report.md', 'skills/qa/**')).toBe(true);
   });
 });
 
@@ -75,7 +75,7 @@ describe('selectTests', () => {
   });
 
   test('skill-specific change selects only that skill and related tests', () => {
-    const result = selectTests(['plan-ceo-review/SKILL.md'], E2E_TOUCHFILES);
+    const result = selectTests(['skills/plan-ceo-review/SKILL.md'], E2E_TOUCHFILES);
     expect(result.selected).toContain('plan-ceo-review');
     expect(result.selected).toContain('plan-ceo-review-selective');
     expect(result.selected.length).toBe(2);
@@ -108,7 +108,7 @@ describe('selectTests', () => {
 
   test('multiple changed files union their selections', () => {
     const result = selectTests(
-      ['plan-ceo-review/SKILL.md', 'retro/SKILL.md.tmpl'],
+      ['skills/plan-ceo-review/SKILL.md', 'skills/retro/SKILL.md.tmpl'],
       E2E_TOUCHFILES,
     );
     expect(result.selected).toContain('plan-ceo-review');
@@ -119,7 +119,7 @@ describe('selectTests', () => {
   });
 
   test('works with LLM_JUDGE_TOUCHFILES', () => {
-    const result = selectTests(['qa/SKILL.md'], LLM_JUDGE_TOUCHFILES);
+    const result = selectTests(['skills/qa/SKILL.md'], LLM_JUDGE_TOUCHFILES);
     expect(result.selected).toContain('qa/SKILL.md workflow');
     expect(result.selected).toContain('qa/SKILL.md health rubric');
     expect(result.selected.length).toBe(2);
