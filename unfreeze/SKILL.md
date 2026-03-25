@@ -1,8 +1,8 @@
 ---
-name: unfreeze
+name: gstack-unfreeze
 version: 0.1.0
 description: |
-  Clear the freeze boundary set by /freeze, allowing edits to all directories
+  Clear the freeze boundary set by /gstack-freeze, allowing edits to all directories
   again. Use when you want to widen edit scope without ending the session.
   Use when asked to "unfreeze", "unlock edits", "remove freeze", or
   "allow all edits".
@@ -13,9 +13,9 @@ allowed-tools:
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->
 
-# /unfreeze — Clear Freeze Boundary
+# /gstack-unfreeze — Clear Freeze Boundary
 
-Remove the edit restriction set by `/freeze`, allowing edits to all directories.
+Remove the edit restriction set by `/gstack-freeze`, allowing edits to all directories.
 
 ```bash
 mkdir -p ~/.gstack/analytics
@@ -35,6 +35,6 @@ else
 fi
 ```
 
-Tell the user the result. Note that `/freeze` hooks are still registered for the
+Tell the user the result. Note that `/gstack-freeze` hooks are still registered for the
 session — they will just allow everything since no state file exists. To re-freeze,
-run `/freeze` again.
+run `/gstack-freeze` again.

@@ -479,20 +479,20 @@ describe('REVIEW_DASHBOARD resolver', () => {
 
   test('plan-ceo-review chaining mentions eng and design reviews', () => {
     const content = fs.readFileSync(path.join(ROOT, 'plan-ceo-review', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('/plan-eng-review');
-    expect(content).toContain('/plan-design-review');
+    expect(content).toContain('/gstack-plan-eng-review');
+    expect(content).toContain('/gstack-plan-design-review');
   });
 
   test('plan-eng-review chaining mentions design and ceo reviews', () => {
     const content = fs.readFileSync(path.join(ROOT, 'plan-eng-review', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('/plan-design-review');
-    expect(content).toContain('/plan-ceo-review');
+    expect(content).toContain('/gstack-plan-design-review');
+    expect(content).toContain('/gstack-plan-ceo-review');
   });
 
   test('plan-design-review chaining mentions eng and ceo reviews', () => {
     const content = fs.readFileSync(path.join(ROOT, 'plan-design-review', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('/plan-eng-review');
-    expect(content).toContain('/plan-ceo-review');
+    expect(content).toContain('/gstack-plan-eng-review');
+    expect(content).toContain('/gstack-plan-ceo-review');
   });
 
   test('ship does NOT contain review chaining', () => {
@@ -662,10 +662,10 @@ describe('PLAN_FILE_REVIEW_REPORT resolver', () => {
     expect(content).toContain('Trigger');
     expect(content).toContain('Findings');
     expect(content).toContain('VERDICT');
-    expect(content).toContain('/plan-ceo-review');
-    expect(content).toContain('/plan-eng-review');
-    expect(content).toContain('/plan-design-review');
-    expect(content).toContain('/codex review');
+    expect(content).toContain('/gstack-plan-ceo-review');
+    expect(content).toContain('/gstack-plan-eng-review');
+    expect(content).toContain('/gstack-plan-design-review');
+    expect(content).toContain('/gstack-codex review');
   });
 });
 

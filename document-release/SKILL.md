@@ -1,5 +1,5 @@
 ---
-name: document-release
+name: gstack-document-release
 version: 1.0.0
 description: |
   Post-ship documentation update. Reads all project docs, cross-references the
@@ -283,12 +283,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
@@ -316,7 +316,7 @@ branch name wherever the instructions say "the base branch."
 
 # Document Release: Post-Ship Documentation Update
 
-You are running the `/document-release` workflow. This runs **after `/ship`** (code committed, PR
+You are running the `/gstack-document-release` workflow. This runs **after `/gstack-ship`** (code committed, PR
 exists or about to exist) but **before the PR merges**. Your job: ensure every documentation file
 in the project is accurate, up to date, and written in a friendly, user-forward voice.
 
@@ -461,7 +461,7 @@ preserved them. This skill must NEVER do that.
 **Rules:**
 1. Read the entire CHANGELOG.md first. Understand what is already there.
 2. Only modify wording within existing entries. Never delete, reorder, or replace entries.
-3. Never regenerate a CHANGELOG entry from scratch. The entry was written by `/ship` from the
+3. Never regenerate a CHANGELOG entry from scratch. The entry was written by `/gstack-ship` from the
    actual diff and commit history. It is the source of truth. You are polishing prose, not
    rewriting history.
 4. If an entry looks wrong or incomplete, use AskUserQuestion — do NOT silently fix it.
@@ -498,7 +498,7 @@ After auditing each file individually, do a cross-doc consistency pass:
 
 ## Step 7: TODOS.md Cleanup
 
-This is a second pass that complements `/ship`'s Step 5.5. Read `review/TODOS-format.md` (if
+This is a second pass that complements `/gstack-ship`'s Step 5.5. Read `review/TODOS-format.md` (if
 available) for the canonical TODO item format.
 
 If TODOS.md does not exist, skip this step.
@@ -595,7 +595,7 @@ gh pr view --json body -q .body > /tmp/gstack-pr-body-$$.md
    updated content. If it does not contain one, append a `## Documentation` section at the end.
 
 3. The Documentation section should include a **doc diff preview** — for each file modified,
-   describe what specifically changed (e.g., "README.md: added /document-release to skills
+   describe what specifically changed (e.g., "README.md: added /gstack-document-release to skills
    table, updated skill count from 9 to 10").
 
 4. Write the updated body back:
@@ -633,7 +633,7 @@ Where status is one of:
 - Current — no changes needed
 - Voice polished — wording adjusted
 - Not bumped — user chose to skip
-- Already bumped — version was set by /ship
+- Already bumped — version was set by /gstack-ship
 - Skipped — file does not exist
 
 ---

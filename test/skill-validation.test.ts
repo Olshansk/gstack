@@ -1061,7 +1061,7 @@ describe('Test Bootstrap ({{TEST_BOOTSTRAP}}) integration', () => {
     expect(content).not.toContain('Test Framework Bootstrap');
     // But should have the recommendation note
     expect(content).toContain('No test framework detected');
-    expect(content).toContain('Run `/qa` to bootstrap');
+    expect(content).toContain('Run `/gstack-qa` to bootstrap');
   });
 
   test('bootstrap includes framework knowledge table', () => {
@@ -1129,7 +1129,7 @@ describe('Phase 8e.5 regression test generation', () => {
   test('regression test includes full attribution comment format', () => {
     const content = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
     expect(content).toContain('// Regression: ISSUE-NNN');
-    expect(content).toContain('// Found by /qa on');
+    expect(content).toContain('// Found by /gstack-qa on');
     expect(content).toContain('// Report: .gstack/qa-reports/');
   });
 
@@ -1252,7 +1252,7 @@ describe('QA report template', () => {
 describe('Codex skill', () => {
   test('codex/SKILL.md exists and has correct frontmatter', () => {
     const content = fs.readFileSync(path.join(ROOT, 'codex', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('name: codex');
+    expect(content).toContain('name: gstack-codex');
     expect(content).toContain('version: 1.0.0');
     expect(content).toContain('allowed-tools:');
   });
@@ -1378,7 +1378,7 @@ describe('Codex skill', () => {
 
   test('/ship gate suggests /review or /plan-eng-review when Eng Review is missing', () => {
     const content = fs.readFileSync(path.join(ROOT, 'ship', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('Abort — run /review or /plan-eng-review first');
+    expect(content).toContain('Abort — run /gstack-review or /gstack-plan-eng-review first');
   });
 
   test('Review Readiness Dashboard includes Adversarial Review row', () => {

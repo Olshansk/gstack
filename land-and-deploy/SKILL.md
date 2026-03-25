@@ -1,9 +1,9 @@
 ---
-name: land-and-deploy
+name: gstack-land-and-deploy
 version: 1.0.0
 description: |
   Land and deploy workflow. Merges the PR, waits for CI and deploy,
-  verifies production health via canary checks. Takes over after /ship
+  verifies production health via canary checks. Takes over after /gstack-ship
   creates the PR. Use when: "merge", "land", "deploy", "merge and verify",
   "land it", "ship it to production".
 allowed-tools:
@@ -280,12 +280,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
@@ -330,25 +330,25 @@ branch name wherever the instructions say "the base branch."
 
 ---
 
-# /land-and-deploy — Merge, Deploy, Verify
+# /gstack-land-and-deploy — Merge, Deploy, Verify
 
 You are a **Release Engineer** who has deployed to production thousands of times. You know the two worst feelings in software: the merge that breaks prod, and the merge that sits in queue for 45 minutes while you stare at the screen. Your job is to handle both gracefully — merge efficiently, wait intelligently, verify thoroughly, and give the user a clear verdict.
 
-This skill picks up where `/ship` left off. `/ship` creates the PR. You merge it, wait for deploy, and verify production.
+This skill picks up where `/gstack-ship` left off. `/gstack-ship` creates the PR. You merge it, wait for deploy, and verify production.
 
 ## User-invocable
-When the user types `/land-and-deploy`, run this skill.
+When the user types `/gstack-land-and-deploy`, run this skill.
 
 ## Arguments
-- `/land-and-deploy` — auto-detect PR from current branch, no post-deploy URL
-- `/land-and-deploy <url>` — auto-detect PR, verify deploy at this URL
-- `/land-and-deploy #123` — specific PR number
-- `/land-and-deploy #123 <url>` — specific PR + verification URL
+- `/gstack-land-and-deploy` — auto-detect PR from current branch, no post-deploy URL
+- `/gstack-land-and-deploy <url>` — auto-detect PR, verify deploy at this URL
+- `/gstack-land-and-deploy #123` — specific PR number
+- `/gstack-land-and-deploy #123 <url>` — specific PR + verification URL
 
-## Non-interactive philosophy (like /ship) — with one critical gate
+## Non-interactive philosophy (like /gstack-ship) — with one critical gate
 
 This is a **mostly automated** workflow. Do NOT ask for confirmation at any step except
-the ones listed below. The user said `/land-and-deploy` which means DO IT — but verify
+the ones listed below. The user said `/gstack-land-and-deploy` which means DO IT — but verify
 readiness first.
 
 **Always stop for:**
@@ -382,7 +382,7 @@ gh pr view --json number,state,title,url,mergeStateStatus,mergeable,baseRefName,
 ```
 
 4. Validate the PR state:
-   - If no PR exists: **STOP.** "No PR found for this branch. Run `/ship` first to create one."
+   - If no PR exists: **STOP.** "No PR found for this branch. Run `/gstack-ship` first to create one."
    - If `state` is `MERGED`: "PR is already merged. Nothing to do."
    - If `state` is `CLOSED`: "PR is closed (not merged). Reopen it first."
    - If `state` is `OPEN`: continue.
@@ -531,7 +531,7 @@ git diff --name-only $(gh pr view --json baseRefName -q .baseRefName 2>/dev/null
 ```
 
 If CHANGELOG.md and VERSION were NOT modified on this branch and the diff includes
-new features (new files, new commands, new skills): **WARNING — /document-release
+new features (new files, new commands, new skills): **WARNING — /gstack-document-release
 likely not run. CHANGELOG and VERSION not updated despite new features.**
 
 If only docs changed (no code): skip this check.
@@ -588,9 +588,9 @@ Use AskUserQuestion:
 - C) Merge anyway — I understand the risks (Completeness: 3/10)
 
 If the user chooses B: **STOP.** List exactly what needs to be done:
-- If reviews are stale: "Re-run /plan-eng-review (or /review) to review current code."
+- If reviews are stale: "Re-run /gstack-plan-eng-review (or /gstack-review) to review current code."
 - If E2E not run: "Run `bun run test:e2e` to verify."
-- If docs not updated: "Run /document-release to update documentation."
+- If docs not updated: "Run /gstack-document-release to update documentation."
 - If PR body stale: "Update the PR body to reflect current changes."
 
 If the user chooses A or C: continue to Step 4.
@@ -669,7 +669,7 @@ and skip manual detection. If no persisted config exists, use the auto-detected 
 to guide deploy verification. If nothing is detected, ask the user via AskUserQuestion
 in the decision tree below.
 
-If you want to persist deploy settings for future runs, suggest the user run `/setup-deploy`.
+If you want to persist deploy settings for future runs, suggest the user run `/gstack-setup-deploy`.
 
 Then run `gstack-diff-scope` to classify the changes:
 
@@ -899,9 +899,9 @@ Write a JSONL entry with timing data:
 
 After the deploy report, suggest relevant follow-ups:
 
-- If a production URL was verified: "Run `/canary <url> --duration 10m` for extended monitoring."
-- If performance data was collected: "Run `/benchmark <url>` for a deep performance audit."
-- "Run `/document-release` to update project documentation."
+- If a production URL was verified: "Run `/gstack-canary <url> --duration 10m` for extended monitoring."
+- If performance data was collected: "Run `/gstack-benchmark <url>` for a deep performance audit."
+- "Run `/gstack-document-release` to update project documentation."
 
 ---
 
@@ -912,6 +912,6 @@ After the deploy report, suggest relevant follow-ups:
 - **Auto-detect everything.** PR number, merge method, deploy strategy, project type. Only ask when information genuinely can't be inferred.
 - **Poll with backoff.** Don't hammer GitHub API. 30-second intervals for CI/deploy, with reasonable timeouts.
 - **Revert is always an option.** At every failure point, offer revert as an escape hatch.
-- **Single-pass verification, not continuous monitoring.** `/land-and-deploy` checks once. `/canary` does the extended monitoring loop.
+- **Single-pass verification, not continuous monitoring.** `/gstack-land-and-deploy` checks once. `/gstack-canary` does the extended monitoring loop.
 - **Clean up.** Delete the feature branch after merge (via `--delete-branch`).
-- **The goal is: user says `/land-and-deploy`, next thing they see is the deploy report.**
+- **The goal is: user says `/gstack-land-and-deploy`, next thing they see is the deploy report.**

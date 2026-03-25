@@ -1,5 +1,5 @@
 ---
-name: autoplan
+name: gstack-autoplan
 version: 1.0.0
 description: |
   Auto-review pipeline — reads the full CEO, design, and eng review skills from disk
@@ -288,12 +288,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
@@ -326,21 +326,21 @@ skill before proceeding.
 
 Say to the user via AskUserQuestion:
 
-> "No design doc found for this branch. `/office-hours` produces a structured problem
+> "No design doc found for this branch. `/gstack-office-hours` produces a structured problem
 > statement, premise challenge, and explored alternatives — it gives this review much
 > sharper input to work with. Takes about 10 minutes. The design doc is per-feature,
 > not per-product — it captures the thinking behind this specific change."
 
 Options:
-- A) Run /office-hours now (we'll pick up the review right after)
+- A) Run /gstack-office-hours now (we'll pick up the review right after)
 - B) Skip — proceed with standard review
 
 If they skip: "No worries — standard review. If you ever want sharper input, try
-/office-hours first next time." Then proceed normally. Do not re-offer later in the session.
+/gstack-office-hours first next time." Then proceed normally. Do not re-offer later in the session.
 
 If they choose A:
 
-Say: "Running /office-hours inline. Once the design doc is ready, I'll pick up
+Say: "Running /gstack-office-hours inline. Once the design doc is ready, I'll pick up
 the review right where we left off."
 
 Read the office-hours skill file from disk using the Read tool:
@@ -356,9 +356,9 @@ Follow it inline, **skipping these sections** (already handled by the parent ski
 - Telemetry (run last)
 
 If the Read fails (file not found), say:
-"Could not load /office-hours — proceeding with standard review."
+"Could not load /gstack-office-hours — proceeding with standard review."
 
-After /office-hours completes, re-run the design doc check:
+After /gstack-office-hours completes, re-run the design doc check:
 ```bash
 SLUG=$(~/.claude/skills/gstack/browse/bin/remote-slug 2>/dev/null || basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null | tr '/' '-' || echo 'no-branch')
@@ -370,11 +370,11 @@ DESIGN=$(ls -t ~/.gstack/projects/$SLUG/*-$BRANCH-design-*.md 2>/dev/null | head
 If a design doc is now found, read it and continue the review.
 If none was produced (user may have cancelled), proceed with standard review.
 
-# /autoplan — Auto-Review Pipeline
+# /gstack-autoplan — Auto-Review Pipeline
 
 One command. Rough plan in, fully reviewed plan out.
 
-/autoplan reads the full CEO, design, and eng review skill files from disk and follows
+/gstack-autoplan reads the full CEO, design, and eng review skill files from disk and follows
 them at full depth — same rigor, same sections, same methodology as running each skill
 manually. The only difference: intermediate AskUserQuestion calls are auto-decided using
 the 6 principles below. Taste decisions (where reasonable people could disagree) are
@@ -457,19 +457,19 @@ echo "RESTORE_PATH=$HOME/.gstack/projects/$SLUG/${BRANCH}-autoplan-restore-${DAT
 
 Write the plan file's full contents to the restore path with this header:
 ```
-# /autoplan Restore Point
+# /gstack-autoplan Restore Point
 Captured: [timestamp] | Branch: [branch] | Commit: [short hash]
 
 ## Re-run Instructions
 1. Copy "Original Plan State" below back to your plan file
-2. Invoke /autoplan
+2. Invoke /gstack-autoplan
 
 ## Original Plan State
 [verbatim plan file contents]
 ```
 
 Then prepend a one-line HTML comment to the plan file:
-`<!-- /autoplan restore point: [RESTORE_PATH] -->`
+`<!-- /gstack-autoplan restore point: [RESTORE_PATH] -->`
 
 ### Step 2: Read context
 
@@ -487,7 +487,7 @@ Read each file using the Read tool:
 - `~/.claude/skills/gstack/plan-eng-review/SKILL.md`
 
 **Section skip list — when following a loaded skill file, SKIP these sections
-(they are already handled by /autoplan):**
+(they are already handled by /gstack-autoplan):**
 - Preamble (run first)
 - AskUserQuestion Format
 - Completeness Principle — Boil the Lake
@@ -678,7 +678,7 @@ noting which items are incomplete. Do not loop indefinitely.
 Present as a message, then use AskUserQuestion:
 
 ```
-## /autoplan Review Complete
+## /gstack-autoplan Review Complete
 
 ### Plan Summary
 [1-3 sentence summary]
@@ -716,7 +716,7 @@ AskUserQuestion options:
 - E) Reject (start over)
 
 **Option handling:**
-- A: mark APPROVED, write review logs, suggest /ship
+- A: mark APPROVED, write review logs, suggest /gstack-ship
 - B: ask which overrides, apply, re-present gate
 - C: answer freeform, re-present gate
 - D: make changes, re-run affected phases (scope→1B, design→2, test plan→3, arch→3). Max 3 cycles.
@@ -726,7 +726,7 @@ AskUserQuestion options:
 
 ## Completion: Write Review Logs
 
-On approval, write 3 separate review log entries so /ship's dashboard recognizes them:
+On approval, write 3 separate review log entries so /gstack-ship's dashboard recognizes them:
 
 ```bash
 COMMIT=$(git rev-parse --short HEAD 2>/dev/null)
@@ -744,13 +744,13 @@ If Phase 2 ran (UI scope):
 
 Replace field values with actual counts from the review.
 
-Suggest next step: `/ship` when ready to create the PR.
+Suggest next step: `/gstack-ship` when ready to create the PR.
 
 ---
 
 ## Important Rules
 
-- **Never abort.** The user chose /autoplan. Respect that choice. Surface all taste decisions, never redirect to interactive review.
+- **Never abort.** The user chose /gstack-autoplan. Respect that choice. Surface all taste decisions, never redirect to interactive review.
 - **Premises are the one gate.** The only non-auto-decided AskUserQuestion is the premise confirmation in Phase 1.
 - **Log every decision.** No silent auto-decisions. Every choice gets a row in the audit trail.
 - **Full depth means full depth.** Do not compress or skip sections from the loaded skill files (except the skip list in Phase 0). "Full depth" means: read the code the section asks you to read, produce the outputs the section requires, identify every issue, and decide each one. A one-sentence summary of a section is not "full depth" — it is a skip. If you catch yourself writing fewer than 3 sentences for any review section, you are likely compressing.

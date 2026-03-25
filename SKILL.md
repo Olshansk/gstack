@@ -6,12 +6,12 @@ description: |
   elements, verify state, diff before/after, take annotated screenshots, test responsive
   layouts, forms, uploads, dialogs, and capture bug evidence. Use when asked to open or
   test a site, verify a deployment, dogfood a user flow, or file a bug with screenshots.
-  Also suggest adjacent gstack skills by stage: brainstorm /office-hours; strategy
-  /plan-ceo-review; architecture /plan-eng-review; design /plan-design-review or
-  /design-consultation; auto-review /autoplan; debugging /investigate; QA /qa; code review
-  /review; visual audit /design-review; shipping /ship; docs /document-release; retro
-  /retro; second opinion /codex; prod safety /careful or /guard; scoped edits /freeze or
-  /unfreeze; gstack upgrades /gstack-upgrade. If the user opts out of suggestions, stop
+  Also suggest adjacent gstack skills by stage: brainstorm /gstack-office-hours; strategy
+  /gstack-plan-ceo-review; architecture /gstack-plan-eng-review; design /gstack-plan-design-review or
+  /gstack-design-consultation; auto-review /gstack-autoplan; debugging /gstack-investigate; QA /gstack-qa; code review
+  /gstack-review; visual audit /gstack-design-review; shipping /gstack-ship; docs /gstack-document-release; retro
+  /gstack-retro; second opinion /gstack-codex; prod safety /gstack-careful or /gstack-guard; scoped edits /gstack-freeze or
+  /gstack-unfreeze; gstack upgrades /gstack-upgrade. If the user opts out of suggestions, stop
   and run gstack-config set proactive false; if they opt back in, run gstack-config set
   proactive true.
 allowed-tools:
@@ -287,12 +287,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one

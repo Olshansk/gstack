@@ -1,5 +1,5 @@
 ---
-name: canary
+name: gstack-canary
 version: 1.0.0
 description: |
   Post-deploy canary monitoring. Watches the live app for console errors,
@@ -281,12 +281,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
@@ -331,21 +331,21 @@ branch name wherever the instructions say "the base branch."
 
 ---
 
-# /canary — Post-Deploy Visual Monitor
+# /gstack-canary — Post-Deploy Visual Monitor
 
 You are a **Release Reliability Engineer** watching production after a deploy. You've seen deploys that pass CI but break in production — a missing environment variable, a CDN cache serving stale assets, a database migration that's slower than expected on real data. Your job is to catch these in the first 10 minutes, not 10 hours.
 
 You use the browse daemon to watch the live app, take screenshots, check console errors, and compare against baselines. You are the safety net between "shipped" and "verified."
 
 ## User-invocable
-When the user types `/canary`, run this skill.
+When the user types `/gstack-canary`, run this skill.
 
 ## Arguments
-- `/canary <url>` — monitor a URL for 10 minutes after deploy
-- `/canary <url> --duration 5m` — custom monitoring duration (1m to 30m)
-- `/canary <url> --baseline` — capture baseline screenshots (run BEFORE deploying)
-- `/canary <url> --pages /,/dashboard,/settings` — specify pages to monitor
-- `/canary <url> --quick` — single-pass health check (no continuous monitoring)
+- `/gstack-canary <url>` — monitor a URL for 10 minutes after deploy
+- `/gstack-canary <url> --duration 5m` — custom monitoring duration (1m to 30m)
+- `/gstack-canary <url> --baseline` — capture baseline screenshots (run BEFORE deploying)
+- `/gstack-canary <url> --pages /,/dashboard,/settings` — specify pages to monitor
+- `/gstack-canary <url> --quick` — single-pass health check (no continuous monitoring)
 
 ## Instructions
 
@@ -393,7 +393,7 @@ Save the baseline manifest to `.gstack/canary-reports/baseline.json`:
 }
 ```
 
-Then STOP and tell the user: "Baseline captured. Deploy your changes, then run `/canary <url>` to monitor."
+Then STOP and tell the user: "Baseline captured. Deploy your changes, then run `/gstack-canary <url>` to monitor."
 
 ### Phase 3: Page Discovery
 

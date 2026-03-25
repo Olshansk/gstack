@@ -1,8 +1,8 @@
 ---
-name: setup-deploy
+name: gstack-setup-deploy
 version: 1.0.0
 description: |
-  Configure deployment settings for /land-and-deploy. Detects your deploy
+  Configure deployment settings for /gstack-land-and-deploy. Detects your deploy
   platform (Fly.io, Render, Vercel, Netlify, Heroku, GitHub Actions, custom),
   production URL, health check endpoints, and deploy status commands. Writes
   the configuration to CLAUDE.md so all future deploys are automatic.
@@ -284,28 +284,28 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
 file you are allowed to edit in plan mode. The plan file review report is part of the
 plan's living status.
 
-# /setup-deploy — Configure Deployment for gstack
+# /gstack-setup-deploy — Configure Deployment for gstack
 
-You are helping the user configure their deployment so `/land-and-deploy` works
+You are helping the user configure their deployment so `/gstack-land-and-deploy` works
 automatically. Your job is to detect the deploy platform, production URL, health
 checks, and deploy status commands — then persist everything to CLAUDE.md.
 
-After this runs once, `/land-and-deploy` reads CLAUDE.md and skips detection entirely.
+After this runs once, `/gstack-land-and-deploy` reads CLAUDE.md and skips detection entirely.
 
 ## User-invocable
-When the user types `/setup-deploy`, run this skill.
+When the user types `/gstack-setup-deploy`, run this skill.
 
 ## Instructions
 
@@ -376,7 +376,7 @@ If `render.yaml` detected:
 5. Set health check: the inferred URL
 
 Ask the user to confirm. Render uses auto-deploy from the connected git branch — after
-merge to main, Render picks it up automatically. The "deploy wait" in /land-and-deploy
+merge to main, Render picks it up automatically. The "deploy wait" in /gstack-land-and-deploy
 should poll the Render URL until it responds with the new version.
 
 #### Vercel
@@ -435,7 +435,7 @@ Read CLAUDE.md (or create it). Find and replace the `## Deploy Configuration` se
 if it exists, or append it at the end.
 
 ```markdown
-## Deploy Configuration (configured by /setup-deploy)
+## Deploy Configuration (configured by /gstack-setup-deploy)
 - Platform: {platform}
 - Production URL: {url}
 - Deploy workflow: {workflow file or "auto-deploy on push"}
@@ -479,12 +479,12 @@ Health check:  {health check}
 Status cmd:    {status command}
 Merge method:  {merge method}
 
-Saved to CLAUDE.md. /land-and-deploy will use these settings automatically.
+Saved to CLAUDE.md. /gstack-land-and-deploy will use these settings automatically.
 
 Next steps:
-- Run /land-and-deploy to merge and deploy your current PR
+- Run /gstack-land-and-deploy to merge and deploy your current PR
 - Edit the "## Deploy Configuration" section in CLAUDE.md to change settings
-- Run /setup-deploy again to reconfigure
+- Run /gstack-setup-deploy again to reconfigure
 ```
 
 ## Important Rules
@@ -492,5 +492,5 @@ Next steps:
 - **Never expose secrets.** Don't print full API keys, tokens, or passwords.
 - **Confirm with the user.** Always show the detected config and ask for confirmation before writing.
 - **CLAUDE.md is the source of truth.** All configuration lives there — not in a separate config file.
-- **Idempotent.** Running /setup-deploy multiple times overwrites the previous config cleanly.
+- **Idempotent.** Running /gstack-setup-deploy multiple times overwrites the previous config cleanly.
 - **Platform CLIs are optional.** If `fly` or `vercel` CLI isn't installed, fall back to URL-based health checks.

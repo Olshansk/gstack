@@ -2827,13 +2827,65 @@ const RESOLVERS: Record<string, (ctx: TemplateContext) => string> = {
   CODEX_PLAN_REVIEW: generateCodexPlanReview,
 };
 
-// ─── Codex Helpers ───────────────────────────────────────────
+// ─── Namespace Helpers ───────────────────────────────────────
 
-function codexSkillName(skillDir: string): string {
+/** Prefix a skill name with gstack- for namespaced installs. Shared by Codex and Claude hosts. */
+function namespacedSkillName(skillDir: string): string {
   if (skillDir === '.' || skillDir === '') return 'gstack';
   // Don't double-prefix: gstack-upgrade → gstack-upgrade (not gstack-gstack-upgrade)
   if (skillDir.startsWith('gstack-')) return skillDir;
   return `gstack-${skillDir}`;
+}
+
+// Alias for backward compat within Codex code paths
+const codexSkillName = namespacedSkillName;
+
+/**
+ * Collect all unprefixed skill names from discovered templates.
+ * Used to build cross-reference rewrite rules.
+ */
+function collectSkillNames(): string[] {
+  const names: string[] = [];
+  for (const tmplPath of findTemplates()) {
+    const content = fs.readFileSync(tmplPath, 'utf-8');
+    const { name } = extractNameAndDescription(content);
+    if (name && name !== 'gstack' && !name.startsWith('gstack-')) {
+      names.push(name);
+    }
+  }
+  // Sort longest-first so "qa-only" matches before "qa"
+  return names.sort((a, b) => b.length - a.length);
+}
+
+/**
+ * Rewrite skill name in frontmatter and cross-references throughout the body.
+ * Transforms `name: review` → `name: gstack-review` and `/review` → `/gstack-review`.
+ */
+function namespaceSkillReferences(content: string, allSkillNames: string[]): string {
+  // 1. Rewrite name: field in frontmatter
+  const nameMatch = content.match(/^name:\s*(.+)$/m);
+  if (nameMatch) {
+    const currentName = nameMatch[1].trim();
+    if (currentName !== 'gstack' && !currentName.startsWith('gstack-')) {
+      content = content.replace(
+        /^name:\s*.+$/m,
+        `name: gstack-${currentName}`
+      );
+    }
+  }
+
+  // 2. Rewrite /skillname cross-references in body
+  // Match /skillname when preceded by whitespace, backtick, (, ", or start-of-line
+  // and followed by non-alphanumeric-or-hyphen (or end-of-line)
+  for (const name of allSkillNames) {
+    const pattern = new RegExp(
+      `((?:^|[\\s\`("]))\\/${name.replace(/-/g, '\\-')}(?=[^a-zA-Z0-9-]|$)`,
+      'gm'
+    );
+    content = content.replace(pattern, `$1/gstack-${name}`);
+  }
+
+  return content;
 }
 
 function extractNameAndDescription(content: string): { name: string; description: string } {
@@ -3032,6 +3084,12 @@ function processTemplate(tmplPath: string, host: Host = 'claude'): { outputPath:
     }
   }
 
+  // For Claude host: namespace skill names with gstack- prefix
+  // so `npx skills add` installs as /gstack-review instead of /review
+  if (host === 'claude') {
+    content = namespaceSkillReferences(content, _allSkillNames);
+  }
+
   // Prepend generated header (after frontmatter)
   const header = GENERATED_HEADER.replace('{{SOURCE}}', path.basename(tmplPath));
   const fmEnd = content.indexOf('---', content.indexOf('---') + 3);
@@ -3059,6 +3117,9 @@ function findTemplates(): string[] {
   }
   return templates;
 }
+
+// Pre-collect skill names for cross-reference rewriting (must run before processTemplate)
+const _allSkillNames = collectSkillNames();
 
 let hasChanges = false;
 

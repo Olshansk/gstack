@@ -1,5 +1,5 @@
 ---
-name: codex
+name: gstack-codex
 version: 1.0.0
 description: |
   OpenAI Codex CLI wrapper — three modes. Code review: independent diff review via
@@ -282,12 +282,12 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | 0 | — | — |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | 0 | — | — |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | 0 | — | — |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | 0 | — | — |
 
-**VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
+**VERDICT:** NO REVIEWS YET — run \`/gstack-autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
 
 **PLAN MODE EXCEPTION — ALWAYS RUN:** This writes to the plan file, which is the one
@@ -313,9 +313,9 @@ branch name wherever the instructions say "the base branch."
 
 ---
 
-# /codex — Multi-AI Second Opinion
+# /gstack-codex — Multi-AI Second Opinion
 
-You are running the `/codex` skill. This wraps the OpenAI Codex CLI to get an independent,
+You are running the `/gstack-codex` skill. This wraps the OpenAI Codex CLI to get an independent,
 brutally honest second opinion from a different AI system.
 
 Codex is the "200 IQ autistic developer" — direct, terse, technically precise, challenges
@@ -339,9 +339,9 @@ If `NOT_FOUND`: stop and tell the user:
 
 Parse the user's input to determine which mode to run:
 
-1. `/codex review` or `/codex review <instructions>` — **Review mode** (Step 2A)
-2. `/codex challenge` or `/codex challenge <focus>` — **Challenge mode** (Step 2B)
-3. `/codex` with no arguments — **Auto-detect:**
+1. `/gstack-codex review` or `/gstack-codex review <instructions>` — **Review mode** (Step 2A)
+2. `/gstack-codex challenge` or `/gstack-codex challenge <focus>` — **Challenge mode** (Step 2B)
+3. `/gstack-codex` with no arguments — **Auto-detect:**
    - Check for a diff (with fallback if origin isn't available):
      `git diff origin/<base> --stat 2>/dev/null | tail -1 || git diff <base> --stat 2>/dev/null | tail -1`
    - If a diff exists, use AskUserQuestion:
@@ -357,7 +357,7 @@ Parse the user's input to determine which mode to run:
      but warn the user: "Note: this plan may be from a different project."
    - If a plan file exists, offer to review it
    - Otherwise, ask: "What would you like to ask Codex?"
-4. `/codex <anything else>` — **Consult mode** (Step 2C), where the remaining text is the prompt
+4. `/gstack-codex <anything else>` — **Consult mode** (Step 2C), where the remaining text is the prompt
 
 ---
 
@@ -376,7 +376,7 @@ codex review --base <base> -c 'model_reasoning_effort="xhigh"' --enable web_sear
 ```
 
 Use `timeout: 300000` on the Bash call. If the user provided custom instructions
-(e.g., `/codex review focus on security`), pass them as the prompt argument:
+(e.g., `/gstack-codex review focus on security`), pass them as the prompt argument:
 ```bash
 codex review "focus on security" --base <base> -c 'model_reasoning_effort="xhigh"' --enable web_search_cached 2>"$TMPERR"
 ```
@@ -406,14 +406,14 @@ or
 GATE: FAIL (N critical findings)
 ```
 
-6. **Cross-model comparison:** If `/review` (Claude's own review) was already run
+6. **Cross-model comparison:** If `/gstack-review` (Claude's own review) was already run
    earlier in this conversation, compare the two sets of findings:
 
 ```
 CROSS-MODEL ANALYSIS:
   Both found: [findings that overlap between Claude and Codex]
   Only Codex found: [findings unique to Codex]
-  Only Claude found: [findings unique to Claude's /review]
+  Only Claude found: [findings unique to Claude's /gstack-review]
   Agreement rate: X% (N/M total unique findings overlap)
 ```
 
@@ -468,10 +468,10 @@ Produce this markdown table:
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
-| CEO Review | \`/plan-ceo-review\` | Scope & strategy | {runs} | {status} | {findings} |
-| Codex Review | \`/codex review\` | Independent 2nd opinion | {runs} | {status} | {findings} |
-| Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | {runs} | {status} | {findings} |
-| Design Review | \`/plan-design-review\` | UI/UX gaps | {runs} | {status} | {findings} |
+| CEO Review | \`/gstack-plan-ceo-review\` | Scope & strategy | {runs} | {status} | {findings} |
+| Codex Review | \`/gstack-codex review\` | Independent 2nd opinion | {runs} | {status} | {findings} |
+| Eng Review | \`/gstack-plan-eng-review\` | Architecture & tests (required) | {runs} | {status} | {findings} |
+| Design Review | \`/gstack-plan-design-review\` | UI/UX gaps | {runs} | {status} | {findings} |
 \`\`\`
 
 Below the table, add these lines (omit any that are empty/not applicable):
@@ -506,7 +506,7 @@ Codex tries to break your code — finding edge cases, race conditions, security
 and failure modes that a normal review would miss.
 
 1. Construct the adversarial prompt. If the user provided a focus area
-(e.g., `/codex challenge security`), include it:
+(e.g., `/gstack-codex challenge security`), include it:
 
 Default prompt (no focus):
 "Review the changes on this branch against the base branch. Run `git diff origin/<base>` to see the diff. Your job is to find ways this code will fail in production. Think like an attacker and a chaos engineer. Find edge cases, race conditions, security holes, resource leaks, failure modes, and silent data corruption paths. Be adversarial. Be thorough. No compliments — just the problems."
@@ -582,7 +582,7 @@ TMPERR=$(mktemp /tmp/codex-err-XXXXXX.txt)
 ```
 
 3. **Plan review auto-detection:** If the user's prompt is about reviewing a plan,
-or if plan files exist and the user said `/codex` with no arguments:
+or if plan files exist and the user said `/gstack-codex` with no arguments:
 ```bash
 ls -t ~/.claude/plans/*.md 2>/dev/null | xargs grep -l "$(basename $(pwd))" 2>/dev/null | head -1
 ```
@@ -655,7 +655,7 @@ CODEX SAYS (consult):
 <full output, verbatim — includes [codex thinking] traces>
 ════════════════════════════════════════════════════════════
 Tokens: N | Est. cost: ~$X.XX
-Session saved — run /codex again to continue this conversation.
+Session saved — run /gstack-codex again to continue this conversation.
 ```
 
 7. After presenting, note any points where Codex's analysis differs from your own
@@ -667,7 +667,7 @@ Session saved — run /codex again to continue this conversation.
 ## Model & Reasoning
 
 **Model:** No model is hardcoded — codex uses whatever its current default is (the frontier
-agentic coding model). This means as OpenAI ships newer models, /codex automatically
+agentic coding model). This means as OpenAI ships newer models, /gstack-codex automatically
 uses them. If the user wants a specific model, pass `-m` through to codex.
 
 **Reasoning effort:** All modes use `xhigh` — maximum reasoning power. When reviewing code, breaking code, or consulting on architecture, you want the model thinking as hard as possible.
@@ -675,8 +675,8 @@ uses them. If the user wants a specific model, pass `-m` through to codex.
 **Web search:** All codex commands use `--enable web_search_cached` so Codex can look up
 docs and APIs during review. This is OpenAI's cached index — fast, no extra cost.
 
-If the user specifies a model (e.g., `/codex review -m gpt-5.1-codex-max`
-or `/codex challenge -m gpt-5.2`), pass the `-m` flag through to codex.
+If the user specifies a model (e.g., `/gstack-codex review -m gpt-5.1-codex-max`
+or `/gstack-codex challenge -m gpt-5.2`), pass the `-m` flag through to codex.
 
 ---
 
@@ -710,5 +710,5 @@ If token count is not available, display: `Tokens: unknown`
   before showing it. Show it in full inside the CODEX SAYS block.
 - **Add synthesis after, not instead of.** Any Claude commentary comes after the full output.
 - **5-minute timeout** on all Bash calls to codex (`timeout: 300000`).
-- **No double-reviewing.** If the user already ran `/review`, Codex provides a second
+- **No double-reviewing.** If the user already ran `/gstack-review`, Codex provides a second
   independent opinion. Do not re-run Claude Code's own review.
